@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_URL } from '../config';
 import '../styles/AdminDashboard.css';
 
 const AdminDashboard = () => {
@@ -22,7 +23,7 @@ const AdminDashboard = () => {
 
   const fetchStats = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/admin/stats');
+      const res = await axios.get(`${API_URL}/api/admin/stats`);
       setStats(res.data);
     } catch (err) {
       console.error(err);
@@ -35,7 +36,7 @@ const AdminDashboard = () => {
       const params = {};
       if (search) params.search = search;
       if (statusFilter) params.status = statusFilter;
-      const res = await axios.get('http://localhost:5000/api/transactions', { params });
+      const res = await axios.get(`${API_URL}/api/transactions`, { params });
       setTransactions(res.data);
     } catch (err) {
       console.error(err);
@@ -46,7 +47,7 @@ const AdminDashboard = () => {
 
   const handleExport = async (format) => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/export/${format}`, {
+      const response = await axios.get(`${API_URL}/api/export/${format}`, {
         responseType: 'blob',
       });
       const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -65,6 +66,7 @@ const AdminDashboard = () => {
   return (
     <div className="admin-dashboard">
       <h1>🛠 Admin Dashboard</h1>
+      <p className="subtitle">Overview of library activity and outstanding loans</p>
 
       <div className="stats-grid">
         <div className="stat-card">
@@ -152,4 +154,3 @@ const AdminDashboard = () => {
 };
 
 export default AdminDashboard;
-

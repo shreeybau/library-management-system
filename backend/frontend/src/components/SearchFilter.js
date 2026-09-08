@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_URL } from '../config';
 import '../styles/SearchFilter.css';
 
 const SearchFilter = () => {
@@ -21,11 +22,10 @@ const SearchFilter = () => {
   const fetchBooks = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:5000/api/books');
+      const response = await axios.get(`${API_URL}/api/books`);
       setBooks(response.data);
       setFilteredBooks(response.data);
 
-      // Extract unique categories
       const uniqueCategories = [...new Set(response.data.map(b => b.category))];
       setCategories(uniqueCategories);
     } catch (err) {
@@ -40,12 +40,12 @@ const SearchFilter = () => {
     try {
       setLoading(true);
       const params = new URLSearchParams();
-      
+
       if (filters.search) params.append('search', filters.search);
       if (filters.category) params.append('category', filters.category);
       if (filters.availability) params.append('availability', filters.availability);
 
-      const response = await axios.get(`http://localhost:5000/api/books?${params}`);
+      const response = await axios.get(`${API_URL}/api/books?${params}`);
       setFilteredBooks(response.data);
     } catch (err) {
       console.error(err);
@@ -62,6 +62,7 @@ const SearchFilter = () => {
 
   useEffect(() => {
     applyFilters();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters]);
 
   return (

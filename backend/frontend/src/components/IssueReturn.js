@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_URL } from '../config';
 import '../styles/IssueReturn.css';
 
 const IssueReturn = () => {
@@ -8,7 +9,6 @@ const IssueReturn = () => {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // Issue form
   const [issueData, setIssueData] = useState({
     book_id: '',
     borrower_name: '',
@@ -16,7 +16,6 @@ const IssueReturn = () => {
     qr_code: '',
   });
 
-  // Return form
   const [returnData, setReturnData] = useState({
     transaction_id: '',
     qr_code: '',
@@ -29,7 +28,7 @@ const IssueReturn = () => {
 
   const fetchBooks = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/books');
+      const response = await axios.get(`${API_URL}/api/books`);
       setBooks(response.data);
     } catch (err) {
       console.error(err);
@@ -39,7 +38,7 @@ const IssueReturn = () => {
 
   const fetchTransactions = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/transactions');
+      const response = await axios.get(`${API_URL}/api/transactions`);
       setTransactions(response.data);
     } catch (err) {
       console.error(err);
@@ -55,7 +54,7 @@ const IssueReturn = () => {
 
     setLoading(true);
     try {
-      await axios.post('http://localhost:5000/api/transactions/issue', issueData);
+      await axios.post(`${API_URL}/api/transactions/issue`, issueData);
       alert('✅ Book issued successfully!');
       setIssueData({ book_id: '', borrower_name: '', borrower_id: '', qr_code: '' });
       fetchBooks();
@@ -76,7 +75,7 @@ const IssueReturn = () => {
 
     setLoading(true);
     try {
-      await axios.post('http://localhost:5000/api/transactions/return', returnData);
+      await axios.post(`${API_URL}/api/transactions/return`, returnData);
       alert('✅ Book returned successfully!');
       setReturnData({ transaction_id: '', qr_code: '' });
       fetchBooks();

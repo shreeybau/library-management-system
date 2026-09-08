@@ -1,11 +1,12 @@
 import React from 'react';
 import axios from 'axios';
+import { API_URL } from '../config';
 import '../styles/ExportData.css';
 
 const ExportData = () => {
   const handleExport = async (format) => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/export/${format}`, {
+      const response = await axios.get(`${API_URL}/api/export/${format}`, {
         responseType: 'blob',
       });
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { QRCodeCanvas } from 'qrcode.react';
 import axios from 'axios';
+import { API_URL } from '../config';
 import '../styles/QRCodeGenerator.css';
 
 const QRCodeGenerator = () => {
@@ -15,7 +16,7 @@ const QRCodeGenerator = () => {
 
   const fetchBooks = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/books');
+      const response = await axios.get(`${API_URL}/api/books`);
       setBooks(response.data);
     } catch (err) {
       console.error(err);
@@ -26,7 +27,7 @@ const QRCodeGenerator = () => {
   const generateQRCode = async (bookId) => {
     setLoading(true);
     try {
-      const response = await axios.post(`http://localhost:5000/api/qrcode/generate/${bookId}`);
+      const response = await axios.post(`${API_URL}/api/qrcode/generate/${bookId}`);
       setQrCode(response.data);
       setSelectedBook(books.find(b => b.id === parseInt(bookId)));
       alert('✅ QR Code generated successfully!');
@@ -52,7 +53,7 @@ const QRCodeGenerator = () => {
 
       <div className="generator-section">
         <h2>Select a Book to Generate QR Code</h2>
-        <select 
+        <select
           onChange={(e) => generateQRCode(e.target.value)}
           defaultValue=""
           disabled={loading}
@@ -70,8 +71,8 @@ const QRCodeGenerator = () => {
         <div className="qr-display-section">
           <h2>QR Code for: {selectedBook.title}</h2>
           <div className="qr-code-box">
-            <QRCodeCanvas 
-              value={qrCode.qrData} 
+            <QRCodeCanvas
+              value={qrCode.qrData}
               size={256}
               level="H"
               includeMargin={true}

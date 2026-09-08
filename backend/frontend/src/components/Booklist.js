@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_URL } from '../config';
 import '../styles/BookList.css';
 
 const BookList = () => {
@@ -11,7 +12,6 @@ const BookList = () => {
   const [isbn, setIsbn] = useState('');
   const [quantity, setQuantity] = useState('');
 
-  // Fetch books on component mount
   useEffect(() => {
     fetchBooks();
   }, []);
@@ -19,7 +19,7 @@ const BookList = () => {
   const fetchBooks = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:5000/api/books');
+      const response = await axios.get(`${API_URL}/api/books`);
       setBooks(response.data);
       setError(null);
     } catch (err) {
@@ -38,7 +38,7 @@ const BookList = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/api/books', {
+      const response = await axios.post(`${API_URL}/api/books`, {
         title,
         author,
         isbn,
@@ -57,7 +57,7 @@ const BookList = () => {
 
   const deleteBook = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/books/${id}`);
+      await axios.delete(`${API_URL}/api/books/${id}`);
       setBooks(books.filter(book => book.id !== id));
     } catch (err) {
       console.error(err);
